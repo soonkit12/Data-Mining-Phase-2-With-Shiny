@@ -1,0 +1,90 @@
+#load packages
+library("arulesViz")
+
+#1.preprocessing - data cleaning
+
+#read file
+transaction <- read.transactions("files/1000-out1.csv", sep =";")
+
+#exploring and preparing the data
+summary(transaction)
+dim(transaction)
+
+#look at the first five transactions
+inspect(transaction[1:5])
+
+#examine the frequency of items
+itemFrequency(transaction)
+
+
+--------------
+#default settings result in zero rules learned
+apriori(transaction)
+
+# set better support and confidence levels to learn more rules - support: 5%, confidence:60%
+transactionrules <- apriori(transaction, parameter = list(support = 0.05, confidence = 0.60))
+#check how many rules generated
+transactionrules
+
+
+----------------------
+tran2 <- read.transactions("files/1000-out2.csv", sep =";")
+a_list <- list("Chocolate Cake","Lemon Cake", "Casino Cake", "Opera Cake", "Strawberry Cake",
+  "Truffle Cake", "Chocolate Eclair", "Coffee Eclair", "Vanilla Eclair", "Napoleon Cake",
+   "Almond Tart", "Apple Pie", "Apple Tart","Apricot Tart", "Berry Tart", 
+    "Blackberry Tart", "Blueberry Tart","Chocolate Tart", "Cherry Tart", "Lemon Tart",
+    "Pecan Tart", "Ganache Cookie", "Gongolais Cookie", "Raspberry Cookie", "Lemon Cookie",
+     "Chocolate Meringue", "Vanilla Meringue","Marzipan Cookie", "Tuile Cookie", "Walnut Cookie",
+     "Almond Croissant", "Apple Croissant", "Apricot Croissant", "Cheese Croissant", "Chocolate Croissant",
+      "Apricot Danish","Apple Danish","Almond Twist","Almond Bear Claw", "Blueberry Danish",
+     "Lemon Lemonade", "Raspberry Lemonade","Orange Juice","Green Tea","Bottled Water",
+     "Hot Coffee","Chocolate Coffee","Vanilla Frappuccino", "Cherry Soda", "Single Espresso")
+
+
+-------------------------
+#load library
+library("arules")
+library("arulesViz")
+
+
+# 1.data cleaning and maniputations
+#read as dataframe
+df <- read.csv("files/1000-out1.csv", sep = ";")
+#check dataframe structure
+str(df)
+dim(df)
+#check any duplicated or missing value
+duplicated(df)
+sum(is.na(df))
+
+#since the dataset already in basket format with first column as a ordered unique 
+#identifier for each transaction and 2nd column is the set of items bought in 
+#that transaction all the items bought at the same time in one row which needed 
+#in finding association rules. we read dataset as trasanction
+
+#2.read dataset as transaction
+tran1 <- read.transactions("files/1000-out1.csv", format =  "basket",  sep = ",", rm.duplicates = TRUE, cols=1)
+
+#view summary
+summary(tran1)
+
+#Graph to display top 5 items
+itemFrequencyPlot(tran1, topN = 5)
+
+# run the apriori algorithm on the transactions by specifying minimum values for support and confidence.
+tran1rules <- apriori(tran1,parameter = list(sup = 0.01, conf = 0.5,target="rules"))
+
+#Print the association rules
+inspect(tran1rules)
+
+#Plot a few graphs that can help to visualize the rules
+plot(tran1rules)
+plot(tran1rules, method = "grouped", control = list(k = 5))
+plot(tran1rules, method="graph", control=list(type="items"))
+plot(tran1rules, method="paracoord",  control=list(alpha=.5, reorder=TRUE))
+plot(tran1rules,measure=c("support","lift"),shading="confidence",interactive=T)
+
+
+
+plot(rules.pruned,measure=c("support","lift"),shading="confidence",interactive=T)
+
