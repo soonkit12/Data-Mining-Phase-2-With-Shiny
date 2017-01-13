@@ -91,10 +91,10 @@ dashboardPage(
           width = 12,
           status = "primary",
           "Objectives:",br(),
-          "1) ", br(),
-          "2) ", br(),
-          "3) ", br(),
-          "4) ", br()
+          "1) algorithms focus on the discovery of valid rules by testing all 
+items or elements in the domain ", br(),
+          "2) discovers significant and valid correlations among items belonging to a specific domain", br(),
+          "3) forecasting in classification problems", br(),
          ) 
         )
       ),
